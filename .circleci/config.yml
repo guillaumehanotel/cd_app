@@ -9,7 +9,7 @@ jobs:
       - run:
           name: "Build Docker image"
           command: |
-            echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_LOGIN} --password-stdin
+            docker login -u ${DOCKER_LOGIN} -p ${DOCKER_HUB_PASSWORD}
             docker build -t guillaumehanotel/cd_app
             docker push guillaumehanotel/cd_app
 
