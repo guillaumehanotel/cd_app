@@ -9,8 +9,8 @@ jobs:
       - run:
           name: "Build Docker image"
           command: |
-            docker login -u ${DOCKER_LOGIN} -p ${DOCKER_HUB_PASSWORD}
-            docker build -t guillaumehanotel/cd_app
+            echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
+            docker build -t guillaumehanotel/cd_app .
             docker push guillaumehanotel/cd_app
 
 workflows:
