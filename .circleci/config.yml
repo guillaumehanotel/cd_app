@@ -12,9 +12,24 @@ jobs:
             echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_LOGIN} --password-stdin
             docker build -t guillaumehanotel/cd_app .
             docker push guillaumehanotel/cd_app
+  deploy:
+    machine:
+      enabled: true
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "ad:4b:0f:3e:21:d3:13:f2:86:b8:c5:b8:dd:80:11:1d"
+      - run:
+          name: "Deploy image on kube cluster"
+          command: |
+            ssh guillaumeh@${PRODUCTION_SERVER_IP} "cd ${PRODUCTION_SERVER_PATH} && ./deploy"
+
 
 workflows:
   version: 2
   build:
     jobs:
       - build
+      - deploy:
+          requires:
+            - build
